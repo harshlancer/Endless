@@ -3,12 +3,23 @@ var canvas = document.getElementById("game-canvas");
 var ctx = canvas.getContext("2d");
 var player = { x: 50, y: 150, width: 10, height: 10 };
 var obstacles = [];
-var gamePause = "false";
+var gamePause = false;
 var score = 0;
 var gameOver = false;
 
-// Event listener for player movement
-document.addEventListener("keydown", function (event) {
+// Event listeners for keyboard and touch events
+var restart = document.getElementById("restart");
+restart.addEventListener("click", restartGame);
+var scoreElement = document.getElementById("score");
+
+var pause = document.getElementById("pause");
+pause.addEventListener("pause", pauseGame);
+document.addEventListener("keydown", handleKeyDown);
+canvas.addEventListener("touchstart", handleTouchStart);
+canvas.addEventListener("touchmove", handleTouchMove);
+canvas.addEventListener("touchend", handleTouchEnd);
+
+function handleKeyDown(event) {
   if (event.code === "ArrowUp" && player.y > 0) {
     player.y -= 10;
   }
@@ -22,13 +33,54 @@ document.addEventListener("keydown", function (event) {
     player.x += 10;
   }
   if (event.code === "Space") {
-    gamePause == !gamePause;
+    togglePause();
   }
-});
+}
+
+function handleTouchStart(event) {
+  event.preventDefault();
+  var touchX = event.touches[0].clientX;
+  var touchY = event.touches[0].clientY;
+  player.x = touchX - player.width / 2;
+  player.y = touchY - player.height / 2;
+}
+
+function handleTouchMove(event) {
+  event.preventDefault();
+  var touchX = event.touches[0].clientX;
+  var touchY = event.touches[0].clientY;
+  player.x = touchX - player.width / 2;
+  player.y = touchY - player.height / 2;
+}
+
+function handleTouchEnd(event) {
+  event.preventDefault();
+  // Handle touch end event
+}
+
+function pauseGame(event) {
+  event.preventDefault();
+  togglePause();
+}
+
+function restartGame(event) {
+  event.preventDefault();
+  player = { x: 50, y: 150, width: 10, height: 10 };
+  obstacles = [];
+  gamePause = false;
+  score = 0;
+  gameOver = false;
+
+  gameLoop();
+}
+
+function togglePause() {
+  gamePause = !gamePause;
+}
 
 // Main game loop
 function gameLoop() {
-  if (!gameOver) {
+  if (!gameOver && !gamePause) {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -81,13 +133,8 @@ function gameLoop() {
 
     // Request next frame
     requestAnimationFrame(gameLoop);
-  } else {
-    // Game over screen
-    ctx.font = "50px Arial";
-    ctx.fillStyle = "#000000";
-    ctx.fillText("Game Over", canvas.width / 2 - 125, canvas.height / 2);
   }
 }
 
-// Start game loop
+// Start the game loop
 gameLoop();
