@@ -20,6 +20,7 @@ document.addEventListener("keydown", handleKeyDown);
 canvas.addEventListener("touchstart", handleTouchStart);
 canvas.addEventListener("touchmove", handleTouchMove);
 canvas.addEventListener("touchend", handleTouchEnd);
+window.addEventListener("deviceorientation", handleOrientation, true);
 
 function handleKeyDown(event) {
   if (event.code === "ArrowUp" && player.y > 0) {
@@ -57,6 +58,23 @@ function handleTouchMove(event) {
 
 function handleTouchEnd(event) {
   event.preventDefault();
+}
+
+function handleOrientation(event) {
+  if (!gamePause && !gameOver) {
+    var tiltX = event.gamma; // In degrees, range: -90 (left) to +90 (right)
+    var tiltY = event.beta;  // In degrees, range: -180 (face-down) to +180 (face-up)
+
+    // Map tiltX and tiltY to player movement
+    var maxTilt = 30; // max tilt considered
+    var speedFactor = 2; // movement speed factor
+    player.x += (tiltX / maxTilt) * speedFactor;
+    player.y += (tiltY / maxTilt) * speedFactor;
+
+    // Ensure the player stays within canvas bounds
+    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+    player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
+  }
 }
 
 function togglePause() {
