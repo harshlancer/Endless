@@ -1,0 +1,220 @@
+:root {
+    --primary: #3a86ff;
+    --primary-hover: #2a75ee;
+    --secondary: #ff006e;
+    --secondary-hover: #e0005f;
+    --background: #f8f9fa;
+    --surface: #ffffff;
+    --text: #212529;
+    --text-light: #6c757d;
+    --player: #ff006e;
+    --obstacle: #3a86ff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.game-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 10px;
+}
+
+#score {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text);
+    transition: transform 0.2s ease;
+}
+
+canvas {
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    max-width: 100%;
+}
+
+.controls {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn span {
+    padding: 0 4px;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-hover);
+    transform: translateY(-2px);
+}
+
+.instructions {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.instructions span {
+    font-weight: 600;
+    color: var(--text);
+}
+
+#game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    transition: opacity 0.3s ease;
+}
+
+.game-over-content {
+    background-color: var(--surface);
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.game-over-content h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--secondary);
+}
+
+.game-over-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.game-over-content #final-score {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 600px) {
+    .game-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    #score {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .game-over-content {
+        padding: 30px;
+    }
+}
